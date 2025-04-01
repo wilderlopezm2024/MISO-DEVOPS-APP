@@ -1,0 +1,63 @@
+{
+    "info": {
+        "name": "Blacklist Microservice API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Agregar email a la lista negra",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer my_static_token"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"email\": \"test@example.com\",\n    \"app_uuid\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"blocked_reason\": \"Actividad sospechosa detectada\"\n}"
+                },
+                "url": {
+                    "raw": "http://<your-domain>/blacklists",
+                    "protocol": "http",
+                    "host": [
+                        "<your-domain>"
+                    ],
+                    "path": [
+                        "blacklists"
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Consultar si un email está en la lista negra",
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer my_static_token"
+                    }
+                ],
+                "url": {
+                    "raw": "http://<your-domain>/blacklists/test@example.com",
+                    "protocol": "http",
+                    "host": [
+                        "<your-domain>"
+                    ],
+                    "path": [
+                        "blacklists",
+                        "test@example.com"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ]
+}
