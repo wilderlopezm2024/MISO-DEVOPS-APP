@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  blacklist-api:
+    build: .
+    container_name: blacklist-api
+    ports:
+      - "5000:5000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@blacklist-db:5432/blacklist_db
+    depends_on:
+      - blacklist-db
+    restart: always
+    networks:
+      - blacklist-network
+
+  blacklist-db:
+    image: postgres:13
+    container_name: blacklist-db
+    volumes:
+      - blacklist-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=blacklist_db
+    ports:
+      - "5432:5432"
+    restart: always
+    networks:
+      - blacklist-network
+
+networks:
+  blacklist-network:
+    name: blacklist-network
+
+volumes:
+  blacklist-data:
+    name: blacklist-data
