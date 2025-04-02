@@ -5,10 +5,15 @@ from flask_restful import Api, Resource
 from datetime import datetime
 import os
 
+from dotenv import load_dotenv
+
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
+
 app = Flask(__name__)
 
 # Configuración de la base de datos. Utiliza la variable de ambiente DATABASE_URL.
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql://user:password@localhost:5432/blacklist_db')
+app.config['SQLALCHEMY_DATABASE_URI'] = f"postgresql://{os.environ.get('DATABASE_USER')}:{os.environ.get('DATABASE_PASSWORD')}@{os.environ.get('DATABASE_HOST')}:5432/blacklist_db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
