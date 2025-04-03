@@ -6,11 +6,18 @@ services:
       - "5000:5000"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@blacklist-db:5432/blacklist_db
+      - FLASK_ENV=development
     depends_on:
-      - blacklist-db
+      blacklist-db:
+        condition: service_healthy
     restart: always
     networks:
       - blacklist-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   blacklist-db:
     image: postgres:13
@@ -26,6 +33,11 @@ services:
     restart: always
     networks:
       - blacklist-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   blacklist-network:

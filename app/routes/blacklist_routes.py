@@ -29,11 +29,11 @@ class BlacklistListResource(Resource):
         if Blacklist.query.filter_by(email=email).first():
             return {"message": "Email already blacklisted"}, 400
 
-        entry = Blacklist(email=email, app_uuid=app_uuid, blocked_reason=reason)
+        entry = Blacklist(email=email, app_uuid=app_uuid, blocked_reason=reason, blocked=True)
         db.session.add(entry)
         db.session.commit()
 
-        return blacklist_schema.dump(entry), 201
+        return {"message": "Email successfully blacklisted", "data": blacklist_schema.dump(entry)}, 201
 
 class BlacklistResource(Resource):
     def get(self, email):
@@ -49,8 +49,18 @@ class PingResource(Resource):
     def get(self):
         return {"message": "pong"}, 200
 
+class ResetResource(Resource):
+    def post(self):
+        if not check_token():
+            return {"message": "Unauthorized"}, 401
+        
+        db.drop_all()
+        db.create_all()
+        return {"message": "Database reset successfully"}, 200
+
 
 api.add_resource(BlacklistListResource, '/blacklists')
 api.add_resource(BlacklistResource, '/blacklists/<string:email>')
 api.add_resource(PingResource, '/ping')
+api.add_resource(ResetResource, '/reset')
 
