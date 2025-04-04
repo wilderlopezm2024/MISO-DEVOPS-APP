@@ -1,63 +1,301 @@
 {
-    "info": {
-        "name": "Blacklist Microservice API",
-        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-    },
-    "item": [
-        {
-            "name": "Agregar email a la lista negra",
-            "request": {
-                "method": "POST",
-                "header": [
-                    {
-                        "key": "Content-Type",
-                        "value": "application/json"
-                    },
-                    {
-                        "key": "Authorization",
-                        "value": "Bearer my_static_token"
-                    }
-                ],
-                "body": {
-                    "mode": "raw",
-                    "raw": "{\n    \"email\": \"test@example.com\",\n    \"app_uuid\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"blocked_reason\": \"Actividad sospechosa detectada\"\n}"
-                },
-                "url": {
-                    "raw": "http://<your-domain>/blacklists",
-                    "protocol": "http",
-                    "host": [
-                        "<your-domain>"
-                    ],
-                    "path": [
-                        "blacklists"
-                    ]
-                }
-            },
-            "response": []
-        },
-        {
-            "name": "Consultar si un email está en la lista negra",
-            "request": {
-                "method": "GET",
-                "header": [
-                    {
-                        "key": "Authorization",
-                        "value": "Bearer my_static_token"
-                    }
-                ],
-                "url": {
-                    "raw": "http://<your-domain>/blacklists/test@example.com",
-                    "protocol": "http",
-                    "host": [
-                        "<your-domain>"
-                    ],
-                    "path": [
-                        "blacklists",
-                        "test@example.com"
-                    ]
-                }
-            },
-            "response": []
-        }
-    ]
+	"info": {
+		"_postman_id": "ca27d804-65b8-4a7e-92ea-5e111b0daf5d",
+		"name": "Blacklist Microservice API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7738564",
+		"_collection_link": "https://misw-4304-devavocados.postman.co/workspace/MISW-4304-DevAvocados-Workspace~35cbc35d-011d-4f78-bf18-04522ea9c4aa/collection/7738564-ca27d804-65b8-4a7e-92ea-5e111b0daf5d?action=share&source=collection_link&creator=7738564"
+	},
+	"item": [
+		{
+			"name": "Restablecer servicio",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{BEARER_TOKEN}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{SERVICE_HOST}}:{{SERVICE_PORT}}/reset",
+					"protocol": "http",
+					"host": [
+						"{{SERVICE_HOST}}"
+					],
+					"port": "{{SERVICE_PORT}}",
+					"path": [
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Chequeo de salud",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{SERVICE_HOST}}:{{SERVICE_PORT}}/ping",
+					"protocol": "http",
+					"host": [
+						"{{SERVICE_HOST}}"
+					],
+					"port": "{{SERVICE_PORT}}",
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar email a la lista negra",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{BEARER_TOKEN}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{EMAIL_ADDRESS}}\",\n    \"app_uuid\": \"{{APP_UUID}}\",\n    \"blocked_reason\": \"{{BLOCKED_REASON}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{SERVICE_HOST}}:{{SERVICE_PORT}}/blacklists",
+					"protocol": "http",
+					"host": [
+						"{{SERVICE_HOST}}"
+					],
+					"port": "{{SERVICE_PORT}}",
+					"path": [
+						"blacklists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar email a la lista negra con token incorrecto",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{BEARER_TOKEN}}abcdef"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{EMAIL_ADDRESS}}\",\n    \"app_uuid\": \"{{APP_UUID}}\",\n    \"blocked_reason\": \"{{BLOCKED_REASON}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{SERVICE_HOST}}:{{SERVICE_PORT}}/blacklists",
+					"protocol": "http",
+					"host": [
+						"{{SERVICE_HOST}}"
+					],
+					"port": "{{SERVICE_PORT}}",
+					"path": [
+						"blacklists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agregar email a la lista negra sin token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{EMAIL_ADDRESS}}\",\n    \"app_uuid\": \"{{APP_UUID}}\",\n    \"blocked_reason\": \"{{BLOCKED_REASON}}\"\n}"
+				},
+				"url": {
+					"raw": "http://{{SERVICE_HOST}}:{{SERVICE_PORT}}/blacklists",
+					"protocol": "http",
+					"host": [
+						"{{SERVICE_HOST}}"
+					],
+					"port": "{{SERVICE_PORT}}",
+					"path": [
+						"blacklists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar un email que está en la lista negra",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{BEARER_TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{SERVICE_HOST}}:{{SERVICE_PORT}}/blacklists/{{EMAIL_ADDRESS}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVICE_HOST}}"
+					],
+					"port": "{{SERVICE_PORT}}",
+					"path": [
+						"blacklists",
+						"{{EMAIL_ADDRESS}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar si un email está en la lista negra sin token",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{SERVICE_HOST}}:{{SERVICE_PORT}}/blacklists/{{EMAIL_ADDRESS}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVICE_HOST}}"
+					],
+					"port": "{{SERVICE_PORT}}",
+					"path": [
+						"blacklists",
+						"{{EMAIL_ADDRESS}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar un email que está en la lista negra con token incorrecto",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{BEARER_TOKEN}}abcdef"
+					}
+				],
+				"url": {
+					"raw": "http://{{SERVICE_HOST}}:{{SERVICE_PORT}}/blacklists/{{EMAIL_ADDRESS}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVICE_HOST}}"
+					],
+					"port": "{{SERVICE_PORT}}",
+					"path": [
+						"blacklists",
+						"{{EMAIL_ADDRESS}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar un email que no está en la lista negra",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{BEARER_TOKEN}}"
+					}
+				],
+				"url": {
+					"raw": "http://{{SERVICE_HOST}}:{{SERVICE_PORT}}/blacklists/{{WHITELIST_EMAIL_ADDRESS}}",
+					"protocol": "http",
+					"host": [
+						"{{SERVICE_HOST}}"
+					],
+					"port": "{{SERVICE_PORT}}",
+					"path": [
+						"blacklists",
+						"{{WHITELIST_EMAIL_ADDRESS}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "SERVICE_HOST",
+			"value": "192.168.1.1",
+			"type": "default"
+		},
+		{
+			"key": "SERVICE_PORT",
+			"value": "8080",
+			"type": "default"
+		},
+		{
+			"key": "EMAIL_ADDRESS",
+			"value": "test@example.com",
+			"type": "default"
+		},
+		{
+			"key": "APP_UUID",
+			"value": "123e4567-e89b-12d3-a456-426614174000",
+			"type": "default"
+		},
+		{
+			"key": "BLOCKED_REASON",
+			"value": "Actividad sospechosa detectada",
+			"type": "default"
+		},
+		{
+			"key": "BEARER_TOKEN",
+			"value": "my_static_token",
+			"type": "default"
+		},
+		{
+			"key": "WHITELIST_EMAIL_ADDRESS",
+			"value": "",
+			"type": "default"
+		}
+	]
 }
