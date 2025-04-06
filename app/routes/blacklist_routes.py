@@ -22,6 +22,7 @@ class BlacklistListResource(Resource):
         email = data.get('email')
         app_uuid = data.get('app_uuid')
         reason = data.get('blocked_reason')
+        request_ip = request.remote_addr  # Capture the IP address of the request
 
         if not email or not app_uuid:
             return {"message": "Missing required fields"}, 400
@@ -29,7 +30,7 @@ class BlacklistListResource(Resource):
         if Blacklist.query.filter_by(email=email).first():
             return {"message": "Email already blacklisted"}, 400
 
-        entry = Blacklist(email=email, app_uuid=app_uuid, blocked_reason=reason, blocked=True)
+        entry = Blacklist(email=email, app_uuid=app_uuid, blocked_reason=reason, blocked=True, request_ip=request_ip)
         db.session.add(entry)
         db.session.commit()
 
@@ -42,7 +43,9 @@ class BlacklistResource(Resource):
 
         entry = Blacklist.query.filter_by(email=email).first()
         if entry:
-            return blacklist_schema.dump(entry), 200
+            response = blacklist_schema.dump(entry)
+            response['request_ip'] = entry.request_ip  # Include the IP in the response
+            return response, 200
         return {"email": email, "blocked": False, "blocked_reason": None}, 200
 
 class PingResource(Resource):

@@ -8,4 +8,5 @@ class Blacklist(db.Model):
     app_uuid = db.Column(db.String(36), nullable=False)
     blocked_reason = db.Column(db.String(255), nullable=True)
     blocked = db.Column(db.Boolean, default=True)
+    request_ip = db.Column(db.String(45), nullable=False)  # IPv6 compatible
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
