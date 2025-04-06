@@ -3,6 +3,7 @@
 		"_postman_id": "ca27d804-65b8-4a7e-92ea-5e111b0daf5d",
 		"name": "Blacklist Microservice API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"description": "Colección de Postman para probar el microservicio de lista negra de correos electrónicos. Incluye documentación detallada y pruebas automatizadas para cada endpoint. Es necesario incluir un token de autorización válido en el encabezado con el valor del token para que las solicitudes sean exitosas.",
 		"_exporter_id": "7738564",
 		"_collection_link": "https://misw-4304-devavocados.postman.co/workspace/MISW-4304-DevAvocados-Workspace~35cbc35d-011d-4f78-bf18-04522ea9c4aa/collection/7738564-ca27d804-65b8-4a7e-92ea-5e111b0daf5d?action=share&source=collection_link&creator=7738564"
 	},
@@ -28,9 +29,30 @@
 					"path": [
 						"reset"
 					]
-				}
+				},
+				"description": "Este endpoint reinicia el estado de la base de datos. Requiere un token de autorización válido en el encabezado."
 			},
-			"response": []
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Estado HTTP es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Mensaje de éxito\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Database reset successfully\");",
+							"});",
+							"pm.test(\"La respuesta tiene la estructura correcta\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Chequeo de salud",
@@ -47,9 +69,30 @@
 					"path": [
 						"ping"
 					]
-				}
+				},
+				"description": "Este endpoint verifica que el servicio esté vivo devolviendo un mensaje 'pong'. No requiere token de autorización."
 			},
-			"response": []
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Estado HTTP es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Mensaje de respuesta es 'pong'\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"pong\");",
+							"});",
+							"pm.test(\"La respuesta tiene la estructura correcta\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Agregar email a la lista negra",
@@ -79,9 +122,37 @@
 					"path": [
 						"blacklists"
 					]
-				}
+				},
+				"description": "Este endpoint agrega un correo electrónico a la lista negra. Requiere un token de autorización válido y un cuerpo JSON con los campos `email`, `app_uuid` y opcionalmente `blocked_reason`."
 			},
-			"response": []
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Estado HTTP es 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"pm.test(\"Mensaje de éxito\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Email successfully blacklisted\");",
+							"});",
+							"pm.test(\"Datos del email están presentes\", function () {",
+							"    const data = pm.response.json().data;",
+							"    pm.expect(data).to.have.property(\"email\");",
+							"    pm.expect(data).to.have.property(\"app_uuid\");",
+							"    pm.expect(data).to.have.property(\"blocked_reason\");",
+							"});",
+							"pm.test(\"La respuesta tiene la estructura correcta\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"});"
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Agregar email a la lista negra con token incorrecto",
@@ -111,9 +182,30 @@
 					"path": [
 						"blacklists"
 					]
-				}
+				},
+				"description": "Este endpoint intenta agregar un correo electrónico a la lista negra con un token de autorización incorrecto. Debería devolver un error 401 (Unauthorized)."
 			},
-			"response": []
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Estado HTTP es 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"pm.test(\"Mensaje de error es 'Unauthorized'\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Unauthorized\");",
+							"});",
+							"pm.test(\"La respuesta tiene la estructura correcta\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Agregar email a la lista negra sin token",
@@ -139,9 +231,30 @@
 					"path": [
 						"blacklists"
 					]
-				}
+				},
+				"description": "Este endpoint intenta agregar un correo electrónico a la lista negra sin proporcionar un token de autorización. Debería devolver un error 401 (Unauthorized)."
 			},
-			"response": []
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Estado HTTP es 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"pm.test(\"Mensaje de error es 'Unauthorized'\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Unauthorized\");",
+							"});",
+							"pm.test(\"La respuesta tiene la estructura correcta\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Consultar un email que está en la lista negra",
@@ -164,9 +277,33 @@
 						"blacklists",
 						"{{EMAIL_ADDRESS}}"
 					]
-				}
+				},
+				"description": "Este endpoint consulta si un correo electrónico está en la lista negra. Requiere un token de autorización válido."
 			},
-			"response": []
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Estado HTTP es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"El email está bloqueado\", function () {",
+							"    const data = pm.response.json();",
+							"    pm.expect(data.blocked).to.eql(true);",
+							"});",
+							"pm.test(\"La respuesta tiene la estructura correcta\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('email');",
+							"    pm.expect(jsonData).to.have.property('blocked');",
+							"    pm.expect(jsonData).to.have.property('blocked_reason');",
+							"});"
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Consultar si un email está en la lista negra sin token",
@@ -184,9 +321,30 @@
 						"blacklists",
 						"{{EMAIL_ADDRESS}}"
 					]
-				}
+				},
+				"description": "Este endpoint intenta consultar si un correo electrónico está en la lista negra sin proporcionar un token de autorización. Debería devolver un error 401 (Unauthorized)."
 			},
-			"response": []
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Estado HTTP es 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"pm.test(\"Mensaje de error es 'Unauthorized'\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Unauthorized\");",
+							"});",
+							"pm.test(\"La respuesta tiene la estructura correcta\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Consultar un email que está en la lista negra con token incorrecto",
@@ -209,9 +367,30 @@
 						"blacklists",
 						"{{EMAIL_ADDRESS}}"
 					]
-				}
+				},
+				"description": "Este endpoint intenta consultar si un correo electrónico está en la lista negra con un token de autorización incorrecto. Debería devolver un error 401 (Unauthorized)."
 			},
-			"response": []
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Estado HTTP es 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"pm.test(\"Mensaje de error es 'Unauthorized'\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Unauthorized\");",
+							"});",
+							"pm.test(\"La respuesta tiene la estructura correcta\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('message');",
+							"});"
+						]
+					}
+				}
+			]
 		},
 		{
 			"name": "Consultar un email que no está en la lista negra",
@@ -234,9 +413,34 @@
 						"blacklists",
 						"{{WHITELIST_EMAIL_ADDRESS}}"
 					]
-				}
+				},
+				"description": "Este endpoint consulta si un correo electrónico no está en la lista negra. Debería devolver un estado 200 con `blocked: false` y `blocked_reason: null`."
 			},
-			"response": []
+			"response": [],
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Estado HTTP es 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"El email no está bloqueado\", function () {",
+							"    const data = pm.response.json();",
+							"    pm.expect(data.blocked).to.eql(false);",
+							"    pm.expect(data.blocked_reason).to.eql(null);",
+							"});",
+							"pm.test(\"La respuesta tiene la estructura correcta\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(jsonData).to.have.property('email');",
+							"    pm.expect(jsonData).to.have.property('blocked');",
+							"    pm.expect(jsonData).to.have.property('blocked_reason');",
+							"});"
+						]
+					}
+				}
+			]
 		}
 	],
 	"event": [
@@ -244,7 +448,6 @@
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
@@ -254,7 +457,6 @@
 			"listen": "test",
 			"script": {
 				"type": "text/javascript",
-				"packages": {},
 				"exec": [
 					""
 				]
@@ -264,38 +466,31 @@
 	"variable": [
 		{
 			"key": "SERVICE_HOST",
-			"value": "192.168.1.1",
-			"type": "default"
+			"value": "localhost"
 		},
 		{
 			"key": "SERVICE_PORT",
-			"value": "8080",
-			"type": "default"
+			"value": "5000"
 		},
 		{
 			"key": "EMAIL_ADDRESS",
-			"value": "test@example.com",
-			"type": "default"
+			"value": "test@example.com"
 		},
 		{
 			"key": "APP_UUID",
-			"value": "123e4567-e89b-12d3-a456-426614174000",
-			"type": "default"
+			"value": "123e4567-e89b-12d3-a456-426614174000"
 		},
 		{
 			"key": "BLOCKED_REASON",
-			"value": "Actividad sospechosa detectada",
-			"type": "default"
+			"value": "Actividad sospechosa detectada"
 		},
 		{
 			"key": "BEARER_TOKEN",
-			"value": "my_static_token",
-			"type": "default"
+			"value": "supersecrettoken123"
 		},
 		{
 			"key": "WHITELIST_EMAIL_ADDRESS",
-			"value": "",
-			"type": "default"
+			"value": "test2@example.com"
 		}
 	]
 }
