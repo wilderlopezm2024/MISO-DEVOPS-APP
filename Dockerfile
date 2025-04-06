@@ -1,5 +1,7 @@
 FROM python:3.9-slim
 
+RUN apt-get update && apt-get install -y curl && apt-get clean
+
 WORKDIR /app
 
 COPY requirements.txt .
@@ -11,11 +13,6 @@ EXPOSE 5000
 
 ENV FLASK_APP=application.py
 ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=80
 
-# Create a startup script
-RUN echo '#!/bin/bash\n\
-python -c "from app import create_app, db; app=create_app(); app.app_context().push(); db.create_all()"\n\
-flask run\n'\
-> /app/start.sh && chmod +x /app/start.sh
-
-CMD ["/app/start.sh"]
+CMD ["flask", "run"]

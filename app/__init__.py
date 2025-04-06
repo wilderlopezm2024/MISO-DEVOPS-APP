@@ -24,7 +24,7 @@ def init_db():
                 print(f"Failed to create tables after {max_retries} attempts")
                 raise
 
-def create_app(config_name='default'):
+def create_app(config_name='production'):
     app = Flask(__name__)
     
     # Use environment variable if available, otherwise use the provided config name
