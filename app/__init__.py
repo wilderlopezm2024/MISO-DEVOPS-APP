@@ -8,22 +8,6 @@ import os
 db = SQLAlchemy()
 ma = Marshmallow()
 
-def init_db():
-    # Ensure we wait for the database to be ready
-    max_retries = 5
-    for i in range(max_retries):
-        try:
-            db.create_all()
-            print("Successfully created database tables")
-            return
-        except Exception as e:
-            if i < max_retries - 1:
-                print(f"Error creating tables: {e}. Retrying in 5 seconds...")
-                time.sleep(5)
-            else:
-                print(f"Failed to create tables after {max_retries} attempts")
-                raise
-
 def create_app(config_name='production'):
     app = Flask(__name__)
     
