@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.12
+    commands:
+      - echo "Instalando dependencias..."
+      - pip install -r requirements.txt
+
+  pre_build:
+    commands:
+      - echo "Ejecutando pruebas unitarias con pytest..."
+      - pytest tests/
+
+  build:
+    commands:
+      - echo "Generando artefacto del proyecto..."
+      - mkdir -p build
+      - cp -r app/ build/app
+      - cp application.py requirements.txt build/
+      - cd build && zip -r ../artifact.zip .
+
+artifacts:
+  files:
+    - artifact.zip
