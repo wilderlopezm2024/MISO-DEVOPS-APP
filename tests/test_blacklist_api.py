@@ -155,10 +155,3 @@ class TestResetEndpoint:
         assert response.status_code == 200
         data = json.loads(response.data)
         assert data['message'] == 'Database reset successfully'
-
-class TestForcedFailure:
-    """Clase creada para forzar el fallo en el pipeline"""
-
-    def test_fail_on_purpose(self):
-        """Esta prueba falla intencionalmente"""
-        assert 1 == 0  
