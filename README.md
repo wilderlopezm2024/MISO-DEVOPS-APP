@@ -10,6 +10,7 @@ Este microservicio permite registrar y consultar direcciones de correo electrón
 email-blacklist-service/
 ├── application.py
 ├── requirements.txt
+├── buildspec.yml
 ├── Dockerfile
 ├── docker-compose.yml
 ├── .env
