@@ -1,6 +1,6 @@
 # Email Blacklist Microservice
 
-Este microservicio permite registrar y consultar direcciones de correo electrónico en una lista negra global. Está construido con **Flask**, **PostgreSQL**, **Docker** y sigue una arquitectura lista para producción.
+Este microservicio permite registrar y consultar direcciones de correo electrónico en una lista negra global. Está construido con **Flask**, **PostgreSQL**, **Docker** y sigue una arquitectura lista para producción. 
 
 ---
 
