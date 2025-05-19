@@ -3,10 +3,11 @@ services:
     build: .
     container_name: blacklist-api
     ports:
-      - "80:80"
+      - "5000:5000"
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@blacklist-db:5432/blacklist_db
       - FLASK_ENV=development
+      - NEW_RELIC_CONFIG_FILE=newrelic.ini
     depends_on:
       blacklist-db:
         condition: service_healthy
